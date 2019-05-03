@@ -1,0 +1,9 @@
+[submodule "components/TFT_eSPI/src"]
+	path = components/TFT_eSPI/src
+	url = https://github.com/Bodmer/TFT_eSPI.git
+[submodule "components/src"]
+	path = components/PubSubClient/src
+	url = https://github.com/knolleary/pubsubclient.git
+[submodule "components/arduino"]
+	path = components/arduino
+	url = https://github.com/espressif/arduino-esp32.git
