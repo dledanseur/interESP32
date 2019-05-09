@@ -5,3 +5,4 @@
 #define MQTT_HOST "1.1.1.1"
 #define MQTT_PORT 1883
 #define MQTT_TOPIC "kitchen/bigWindow/shutter"
+#define MQTT_STATE_TOPIC "kitchen/bigWindow/shutter/state"

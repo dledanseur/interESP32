@@ -3,6 +3,7 @@
 
 #include "button.hpp"
 #include "command_manager.hpp"
+#include "wifi_manager.hpp"
 
 #define RELAIS_UP 32
 #define RELAIS_DOWN 33
@@ -16,30 +17,48 @@
 enum Action {
     UP,
     DOWN,
-    STANDBY
+    STANDBY,
+    UNKNOWN
 };
 
 class State {
     public:
     Action action;
+    Action state;
 };
 
-class StopCommand : public Command {
+class BaseCommand : public Command {
+    public:
+    BaseCommand(WifiManager& wifiManager);
+
+    protected:
+    WifiManager& wifiManager;
+};
+
+class StopCommand : public BaseCommand {
+    using BaseCommand::BaseCommand;
+
     public:
     virtual void execute(CommandManager& manager);
 };
 
-class UpCommand : public Command {
+class UpCommand : public BaseCommand {
+    using BaseCommand::BaseCommand;
+
     public:
     virtual void execute(CommandManager& manager);
 };
 
-class DownCommand : public Command {
+class DownCommand : public BaseCommand {
+    using BaseCommand::BaseCommand;
+
     public:
     virtual void execute(CommandManager& manager);
 };
 
-class StandbyCommand : public Command {
+class StandbyCommand : public BaseCommand {
+    using BaseCommand::BaseCommand;
+
     public:
     virtual void execute(CommandManager& manager);
 };

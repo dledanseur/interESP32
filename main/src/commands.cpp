@@ -6,56 +6,61 @@
 State state;
 void cancelTimer(CommandManager& manager) {
     manager.cancelScheduledCommand(AUTOSTOP_TAG);
-    //esp_sleep_disable_wakeup_source(ESP_SLEEP_WAKEUP_TIMER);
 }
 
 void stopAll() {
-    //state.action = STANDBY;
     digitalWrite(RELAIS_DOWN, 1);
     digitalWrite(RELAIS_UP, 1);
-    Serial.println("Written relays state");
-    Serial.flush();
-    //esp_sleep_disable_wakeup_source(ESP_SLEEP_WAKEUP_TIMER);
 }
 
 void beginTimer(CommandManager& manager) {
     Command& cmd = manager.getRegisteredCommand(STOP_CMD_TAG);
     manager.scheduleCommand(AUTOSTOP_TAG, AUTOSTOP_DELAY, cmd);
-    //esp_sleep_enable_timer_wakeup(AUTOSTOP_DELAY * 1000);
+}
+
+BaseCommand::BaseCommand(WifiManager& wifiManager): wifiManager(wifiManager) {
 }
 
 void UpCommand::execute(CommandManager& manager) {
-    Serial.println("Up command");
     cancelTimer(manager);
-    //state.action = UP;
     digitalWrite(RELAIS_DOWN, 1);
     digitalWrite(RELAIS_UP, 0);
-    Serial.println("Written relays state");
-    Serial.flush();
-    beginTimer(manager);    
+    beginTimer(manager);
+    state.action = UP;
+    if (state.state != UP) {
+        this->wifiManager.sendState("middle");
+    }
 }
 
 void DownCommand::execute(CommandManager& manager) {
-    Serial.println("Down command");
     cancelTimer(manager);
-    //state.action = DOWN;
     digitalWrite(RELAIS_DOWN, 0);
     digitalWrite(RELAIS_UP, 1);
-    Serial.println("Written relays state");
-    Serial.flush();
     beginTimer(manager);
+    state.action = DOWN;
+    if (state.state != DOWN) {
+        this->wifiManager.sendState("middle");
+    }
 }
 
 void StandbyCommand::execute(CommandManager& manager) {
-    Serial.println("Standby command");
     cancelTimer(manager);
     stopAll();
 }
 
 /* Stop command is the same as the standby one, without cancelling the
-timer. To be used with scheduled commands in order to stop relais
+timer. To be used with scheduled commands in order to stop relays
 after some time */
 void StopCommand::execute(CommandManager& manager) {
-    Serial.println("Stop command");
+    if (state.action == UP) {
+        this->wifiManager.sendState("up");
+        state.state = UP;
+    }
+    else {
+        this->wifiManager.sendState("down");
+        state.state = DOWN;
+    }
+
     stopAll();
+    
 }

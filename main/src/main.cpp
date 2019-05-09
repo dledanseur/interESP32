@@ -60,13 +60,13 @@
 TFT_eSPI    tft = TFT_eSPI();         // Declare object "tft"
 
 CommandManager commandManager;
-TouchManager touchManager(tft, commandManager);
-StopCommand stopCmd;
-UpCommand upCmd;
-DownCommand downCmd;
-StandbyCommand standbyCmd;
-
 WifiManager wifiManager(commandManager);
+TouchManager touchManager(tft, commandManager);
+StopCommand stopCmd(wifiManager);
+UpCommand upCmd(wifiManager);
+DownCommand downCmd(wifiManager);
+StandbyCommand standbyCmd(wifiManager);
+
 SemaphoreHandle_t xSemaphore = NULL;
 
 extern "C" void IRAM_ATTR triggered_isr(void* instance) {
@@ -147,7 +147,7 @@ void setup()
 
   Serial.println("Setting wifi settings");
   wifiManager.connect(WIFI_SSID, WIFI_PASSWORD,
-                      MQTT_HOST, MQTT_PORT, MQTT_TOPIC);
+                      MQTT_HOST, MQTT_PORT, MQTT_TOPIC, MQTT_STATE_TOPIC);
 
   Serial.println("Setting sleep mode settings...");
   // keep RST pin state so that screen stays up in sleep mode

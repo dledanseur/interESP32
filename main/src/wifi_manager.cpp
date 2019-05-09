@@ -16,7 +16,7 @@ WifiManager::WifiManager(CommandManager& cmd_manager) {
 
 void WifiManager::connect(const char* ssid, const char* password,
                          const char* mqtt_host, int mqtt_port, 
-                         const char* mqtt_topic) {
+                         const char* mqtt_topic, const char* mqtt_state_topic) {
     // We start by connecting to a WiFi network
     WiFi.persistent(false);
     //WiFiMulti.addAP(ssid, password);
@@ -46,6 +46,7 @@ void WifiManager::connect(const char* ssid, const char* password,
     client.setServer(mqtt_host, mqtt_port);
 
     client.setCallback(&callback);
+    this->mqtt_state_topic = mqtt_state_topic;
     this->mqtt_topic = mqtt_topic;
     this->mqtt_host = mqtt_host;
     this->mqtt_port = mqtt_port;
@@ -132,5 +133,9 @@ void WifiManager::loop() {
   //esp_wifi_stop();
 }
 
+void WifiManager::sendState(const char* state) {
+  uint8_t* bytes = (uint8_t*) state;
 
+  client.publish(this->mqtt_state_topic, bytes, strlen(state), true);
+} 
 

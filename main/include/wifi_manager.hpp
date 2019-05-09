@@ -1,3 +1,6 @@
+#ifndef WIFIMANAGER_HPP
+#define WIFIMANAGER_HPP
+
 #include <Arduino.h>
 #include <WiFi.h>
 #include "command_manager.hpp"
@@ -5,6 +8,7 @@
 class WifiManager {
     private:
     const char *mqtt_topic;
+    const char *mqtt_state_topic;
     const char *mqtt_host;
     int mqtt_port;
     static CommandManager* command_manager;
@@ -13,9 +17,12 @@ class WifiManager {
     WifiManager(CommandManager& command_manager);
     void connect(const char* ssid, const char* password,
                 const char* mqtt_host, int mqtt_port,
-                const char* mqtt_topic);
+                const char* mqtt_topic, const char* mqtt_state_topic);
+    void sendState(const char* state);
     static void callback(char* topic, byte* payload, unsigned int length);
     static void WiFiEvent(WiFiEvent_t event);
     void reconnect();
     void loop();
 };
+
+#endif
