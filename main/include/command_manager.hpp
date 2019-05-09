@@ -9,7 +9,8 @@ class CommandManager;
 
 class Command {
     public:
-    virtual void execute(CommandManager& manager);
+    virtual void execute(CommandManager& manager) = 0;
+    virtual ~Command();
 };
 
 class TimedCommand {

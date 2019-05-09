@@ -10,15 +10,20 @@
 class Command;
 class Button;
 
+class ScreenOffCommand;
 
 class TouchManager {
     private:
     std::vector<Button*> buttons;
     std::vector<Image*> images;
     std::map<uint, Command*> registeredCommands;
-    
+    ScreenOffCommand* screenOffCommand = NULL;
     TFT_eSPI& tft;
     CommandManager& command_manager;
+    bool screenOn = true;
+
+    void scheduleScreenOff();
+    bool inScreen(int x, int y);
 
     public:
     TouchManager(TFT_eSPI& tft, CommandManager& command_manager);
@@ -30,6 +35,17 @@ class TouchManager {
     
     void loop();
     ~TouchManager();
+
+    friend class ScreenOffCommand;
+};
+
+class ScreenOffCommand:public Command {   
+    private:
+    TouchManager& touchManager;
+
+    public: 
+    ScreenOffCommand(TouchManager& manager);
+    virtual void execute(CommandManager& manager);
 };
 
 #endif

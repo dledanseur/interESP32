@@ -167,7 +167,6 @@ void setup()
 
 void loop(void)
 {
-  Serial.begin(115200);
   gpio_intr_disable(PEN);
   #ifndef CALIBRATION
   rtc_gpio_hold_dis(GPIO_NUM_32);

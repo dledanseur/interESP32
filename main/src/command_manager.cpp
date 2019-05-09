@@ -57,3 +57,7 @@ void CommandManager::loop() {
         }
     }
 }
+
+Command::~Command() {
+
+}
