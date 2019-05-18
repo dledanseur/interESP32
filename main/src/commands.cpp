@@ -1,7 +1,6 @@
+#include <Arduino.h>
 #include "commands.hpp"
-#include "Arduino.h"
-#include "esp32-hal-timer.h"
-
+#include "config.hpp"
 
 State state;
 void cancelTimer(CommandManager& manager) {

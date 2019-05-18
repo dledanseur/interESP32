@@ -6,3 +6,6 @@
 #define MQTT_PORT 1883
 #define MQTT_TOPIC "kitchen/bigWindow/shutter"
 #define MQTT_STATE_TOPIC "kitchen/bigWindow/shutter/state"
+// Time after which all commands will be canceled
+#define AUTOSTOP_DELAY 35000
+#define SCREEN_OFF_DELAY 60000

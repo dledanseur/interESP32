@@ -1,11 +1,13 @@
-#include <stdlib.h>
 #include "touch_manager.hpp"
+
+#include <stdlib.h>
 #include <driver/dac.h>
 #include <Arduino.h>
 
+#include "config.hpp"
+
 #define BLK_PIN 25
 #define SCREEN_OFF_CMD_TAG 108
-#define SCREEN_OFF_DELAY 30000
 
 ScreenOffCommand::ScreenOffCommand(TouchManager& touchManager):touchManager(touchManager) {
 }

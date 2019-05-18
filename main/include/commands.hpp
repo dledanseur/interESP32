@@ -11,8 +11,6 @@
 #define UP_CMD_TAG 2
 #define DOWN_CMD_TAG 3
 #define AUTOSTOP_TAG 1
-// Time after which all commands will be canceled
-#define AUTOSTOP_DELAY 15000
 
 enum Action {
     UP,
